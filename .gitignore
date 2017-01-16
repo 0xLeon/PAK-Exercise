@@ -5,6 +5,10 @@ report.pdf
 report.synctex.gz
 report.toc
 
+# Simulation results
+*.pcap
+*.flowmon
+
 
 # VS Code
 .vscode/*
