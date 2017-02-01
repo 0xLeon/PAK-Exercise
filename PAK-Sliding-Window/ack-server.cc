@@ -8,7 +8,7 @@
 #include "ns3/application.h"
 #include "ns3/udp-socket-factory.h"
 
-using namespace ns3;
+namespace ns3 {
 
 NS_OBJECT_ENSURE_REGISTERED(AckServerApplication);
 
@@ -29,8 +29,7 @@ AckServerApplication::AckServerApplication(void)
 	, m_meanDataRate(0)
 	, m_dataRate0(0)
 	, m_dataRate1(0)
-	, m_dataRate2(0)
-	{ }
+	, m_dataRate2(0) {}
 
 AckServerApplication::~AckServerApplication(void) {}
 
@@ -130,7 +129,7 @@ PacketSeqHeader::PacketSeqHeader(uint64_t seq)
 uint32_t PacketSeqHeader::Deserialize(Buffer::Iterator start) {
 	m_seq = start.ReadU64();
 
-	return 8; // read 8 bytes
+	return 8;
 }
 
 uint32_t PacketSeqHeader::GetSerializedSize(void) const {
@@ -158,3 +157,5 @@ TypeId PacketSeqHeader::GetTypeId(void) {
 TypeId PacketSeqHeader::GetInstanceTypeId(void) const {
 	return GetTypeId();
 }
+
+} // namespace ns3

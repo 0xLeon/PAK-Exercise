@@ -44,7 +44,7 @@ ApplicationContainer EmailNewsletterHelper::Install(Ptr<Node> node) const {
 
 ApplicationContainer EmailNewsletterHelper::Install(std::string nodeName) const {
 	Ptr<Node> node = Names::Find<Node>(nodeName);
-	
+
 	return ApplicationContainer(InstallPriv(node));
 }
 

@@ -1,3 +1,5 @@
+#include "sliding-client.h"
+
 #include "ns3/log.h"
 #include "ns3/address.h"
 #include "ns3/node.h"
@@ -11,7 +13,6 @@
 #include "ns3/udp-socket-factory.h"
 
 #include "ack-server.h"
-#include "sliding-client.h"
 
 #include <algorithm>
 
@@ -62,7 +63,7 @@ TypeId SlidingClient::GetTypeId(void) {
 			MakeTraceSourceAccessor(&SlidingClient::m_txTrace),
 			"ns3::Packet::TracedCallback")
 		;
-	
+
 	return tid;
 }
 
@@ -75,8 +76,7 @@ SlidingClient::SlidingClient()
 	, m_windowFillLevel(0)
 	, m_nextSendSize(1400)
 	, m_sentPackets(0)
-	, m_ackedPackets(0)
-	{
+	, m_ackedPackets(0) {
 	NS_LOG_FUNCTION(this);
 }
 
@@ -108,17 +108,17 @@ void SlidingClient::DoDispose(void) {
 
 void SlidingClient::StartApplication(void) {
 	m_socket = Socket::CreateSocket(GetNode(), UdpSocketFactory::GetTypeId());
-	
+
 	if (Inet6SocketAddress::IsMatchingType(m_peer)) {
 		m_socket->Bind6();
 	}
 	else if (InetSocketAddress::IsMatchingType(m_peer)) {
 		m_socket->Bind();
 	}
-	
+
 	// m_socket->SetSendCallback(MakeCallback(&SlidingClient::BufferAvailableCb, this));
 	m_socket->SetRecvCallback(MakeCallback(&SlidingClient::AckAvailableCb, this));
-	
+
 	ScheduleNextPacket(m_packetSize);
 }
 
@@ -148,22 +148,22 @@ void SlidingClient::ScheduleNextPacket(uint64_t sendSize) {
 
 void SlidingClient::SendPacket() {
 	NS_LOG_FUNCTION(this);
-	
+
 	uint64_t availableWindowSize = m_windowSize - m_windowFillLevel;
 	uint64_t toSend = std::min(m_nextSendSize, availableWindowSize);
-	
+
 	// TODO: maybe set a better min bytes send threshold
 	if (toSend > 0) {
 		Ptr<Packet> packet = Create<Packet>(toSend);
 		m_txTrace(packet);
 		uint64_t actual = (uint64_t) m_socket->SendTo(packet, 0, m_peer);
-		
+
 		m_windowFillLevel += actual;
 		m_sentPackets++;
 
 		Ptr<SlidingClientPacketRecord> pRec = Create<SlidingClientPacketRecord>(packet, actual, MilliSeconds(500), this); // TODO: dynamic packet timeout
 		m_unackedPackets[packet->GetUid()] = pRec;
-		
+
 		if (actual != toSend) {
 			m_remaining = toSend - actual;
 			ScheduleNextPacket(m_remaining);
@@ -185,7 +185,7 @@ void SlidingClient::SendPacket() {
 
 void SlidingClient::BufferAvailableCb(Ptr<Socket>, uint32_t) {
 	NS_LOG_FUNCTION(this);
-	
+
 	if (m_remaining != 0) {
 		ScheduleNextPacket(m_remaining);
 	}
@@ -196,10 +196,10 @@ void SlidingClient::BufferAvailableCb(Ptr<Socket>, uint32_t) {
 
 void SlidingClient::AckAvailableCb(Ptr<Socket> socket) {
 	NS_LOG_FUNCTION(this);
-	
+
 	Ptr<Packet> packet;
 	Address from;
-	
+
 	while (packet = socket->RecvFrom(from)) {
 		PacketSeqHeader pHeader;
 		packet->PeekHeader(pHeader);
@@ -216,5 +216,4 @@ void SlidingClient::AckAvailableCb(Ptr<Socket> socket) {
 	}
 }
 
-
-}
+} // namespace ns3

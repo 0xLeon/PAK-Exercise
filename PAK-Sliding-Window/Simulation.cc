@@ -18,31 +18,33 @@ using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE("PakSliding");
 
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 	/*
 	 * A (0) ------- R1 (1) ------- R2 (2) ------- R3 (3) ------- R4 (4) ------- B (5)
 	 */
 
 	LogComponentEnable("PakSliding", LOG_LEVEL_INFO);
-	
+
 	uint64_t packetSize = 1400;
 	uint64_t windowSize = 25000;
 	uint64_t runtime = 60;
-	
+
 	CommandLine cmd;
 	cmd.AddValue("runtime", "Length in seconds to run this simulation", runtime);
 	cmd.AddValue("packetSize", "Size of one packet in byte", packetSize);
 	cmd.AddValue("windowSize", "Window size in byte", windowSize);
 	cmd.Parse(argc, argv);
-	
+
+
 	NodeContainer nodes;
 	nodes.Create(6);
 
-	NodeContainer nAR1  = NodeContainer(nodes.Get(0), nodes.Get(1));
+	NodeContainer nAR1 = NodeContainer(nodes.Get(0), nodes.Get(1));
 	NodeContainer nR1R2 = NodeContainer(nodes.Get(1), nodes.Get(2));
 	NodeContainer nR2R3 = NodeContainer(nodes.Get(2), nodes.Get(3));
 	NodeContainer nR3R4 = NodeContainer(nodes.Get(3), nodes.Get(4));
-	NodeContainer nR4B  = NodeContainer(nodes.Get(4), nodes.Get(5));
+	NodeContainer nR4B = NodeContainer(nodes.Get(4), nodes.Get(5));
+
 
 	InternetStackHelper internet;
 	internet.Install(nodes);
@@ -89,25 +91,30 @@ int main (int argc, char *argv[]) {
 	Ptr<AckServerApplication> ackSrv = Create<AckServerApplication>();
 	nodes.Get(5)->AddApplication(ackSrv);
 	ApplicationContainer ackSrvAppContainer(ackSrv);
-	
+
+
 	Ptr<SlidingClient> sldCln = CreateObjectWithAttributes<SlidingClient>(
-		"PacketSize",	UintegerValue(packetSize),
-		"WindowSize",	UintegerValue(windowSize),
-		"Remote",	AddressValue(InetSocketAddress(iR4B.GetAddress(1), 9)),
-		"DataRate",	DataRateValue(DataRate("10Mbps"))
-	);
+		"PacketSize", UintegerValue(packetSize),
+		"WindowSize", UintegerValue(windowSize),
+		"Remote", AddressValue(InetSocketAddress(iR4B.GetAddress(1), 9)),
+		"DataRate", DataRateValue(DataRate("10Mbps"))
+		);
 	nodes.Get(0)->AddApplication(sldCln);
 	ApplicationContainer sldClnAppContainer(sldCln);
+
 
 	ackSrvAppContainer.Start(Seconds(0));
 	ackSrvAppContainer.Stop(Seconds(runtime + 10));
 	sldClnAppContainer.Start(Seconds(0));
 	sldClnAppContainer.Stop(Seconds(runtime));
 
+
 	p2p.EnablePcapAll("pak-sliding");
+
 
 	Simulator::Stop(Seconds(runtime + 10));
 	Simulator::Run();
+
 
 	std::cout << std::fixed;
 	std::cout << std::endl << std::endl;
@@ -121,6 +128,7 @@ int main (int argc, char *argv[]) {
 
 
 	Simulator::Destroy();
+
 
 	return 0;
 }

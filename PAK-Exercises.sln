@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAK-Airline", "PAK-Airline\PAK-Airline.vcxproj", "{F967377F-1198-4DA4-A339-5B37241BBA4D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAK-Newsletter", "PAK-Newsletter\PAK-Newsletter.vcxproj", "{B0F2D39E-2001-41D0-BF11-CC54ED9CAD44}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAK-Sliding-Window", "PAK-Sliding-Window\PAK-Sliding-Window.vcxproj", "{342D59E9-1C8C-4E8F-AEC6-0336D5C3C5B6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAK-TCP-Model", "PAK-TCP-Model\PAK-TCP-Model.vcxproj", "{711E1F6E-F0E6-464E-8BB9-75BBE59E097B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAK-NSC-Reno", "PAK-NSC-Reno\PAK-NSC-Reno.vcxproj", "{72B70C58-5365-43D9-978F-D00B3CCFAEF8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PAK-Tutorial", "PAK-Tutorial\PAK-Tutorial.vcxproj", "{4100A79D-86AD-4007-B06C-82D6833D2388}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F967377F-1198-4DA4-A339-5B37241BBA4D}.Debug|x86.ActiveCfg = Debug|Win32
+		{F967377F-1198-4DA4-A339-5B37241BBA4D}.Debug|x86.Build.0 = Debug|Win32
+		{F967377F-1198-4DA4-A339-5B37241BBA4D}.Release|x86.ActiveCfg = Release|Win32
+		{F967377F-1198-4DA4-A339-5B37241BBA4D}.Release|x86.Build.0 = Release|Win32
+		{B0F2D39E-2001-41D0-BF11-CC54ED9CAD44}.Debug|x86.ActiveCfg = Debug|Win32
+		{B0F2D39E-2001-41D0-BF11-CC54ED9CAD44}.Debug|x86.Build.0 = Debug|Win32
+		{B0F2D39E-2001-41D0-BF11-CC54ED9CAD44}.Release|x86.ActiveCfg = Release|Win32
+		{B0F2D39E-2001-41D0-BF11-CC54ED9CAD44}.Release|x86.Build.0 = Release|Win32
+		{342D59E9-1C8C-4E8F-AEC6-0336D5C3C5B6}.Debug|x86.ActiveCfg = Debug|Win32
+		{342D59E9-1C8C-4E8F-AEC6-0336D5C3C5B6}.Debug|x86.Build.0 = Debug|Win32
+		{342D59E9-1C8C-4E8F-AEC6-0336D5C3C5B6}.Release|x86.ActiveCfg = Release|Win32
+		{342D59E9-1C8C-4E8F-AEC6-0336D5C3C5B6}.Release|x86.Build.0 = Release|Win32
+		{711E1F6E-F0E6-464E-8BB9-75BBE59E097B}.Debug|x86.ActiveCfg = Debug|Win32
+		{711E1F6E-F0E6-464E-8BB9-75BBE59E097B}.Debug|x86.Build.0 = Debug|Win32
+		{711E1F6E-F0E6-464E-8BB9-75BBE59E097B}.Release|x86.ActiveCfg = Release|Win32
+		{711E1F6E-F0E6-464E-8BB9-75BBE59E097B}.Release|x86.Build.0 = Release|Win32
+		{72B70C58-5365-43D9-978F-D00B3CCFAEF8}.Debug|x86.ActiveCfg = Debug|Win32
+		{72B70C58-5365-43D9-978F-D00B3CCFAEF8}.Debug|x86.Build.0 = Debug|Win32
+		{72B70C58-5365-43D9-978F-D00B3CCFAEF8}.Release|x86.ActiveCfg = Release|Win32
+		{72B70C58-5365-43D9-978F-D00B3CCFAEF8}.Release|x86.Build.0 = Release|Win32
+		{4100A79D-86AD-4007-B06C-82D6833D2388}.Debug|x86.ActiveCfg = Debug|Win32
+		{4100A79D-86AD-4007-B06C-82D6833D2388}.Debug|x86.Build.0 = Debug|Win32
+		{4100A79D-86AD-4007-B06C-82D6833D2388}.Release|x86.ActiveCfg = Release|Win32
+		{4100A79D-86AD-4007-B06C-82D6833D2388}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

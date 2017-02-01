@@ -15,23 +15,21 @@ using namespace ns3;
 NS_LOG_COMPONENT_DEFINE("PakNscReno");
 
 int main(int argc, char* argv[]) {
-	/* 
-	 * A (0) ----- R (1) ----- B (2)
-	 */
+	/*
+	* A (0) ----- R (1) ----- B (2)
+	*/
 
 	LogComponentEnable("PakNscReno", LOG_LEVEL_INFO);
 
-	uint32_t simTime = 120;
+	uint32_t runtime = 120;
 	bool useNsc = false;
 	bool limitQueue = false;
-	std::string nscStack = "liblinux2.6.26.so";
 	std::string tcpCong = "reno";
 
 	CommandLine cmd;
-	cmd.AddValue("simTime", "Length in seconds to run this simulation", simTime);
+	cmd.AddValue("runtime", "Length in seconds to run this simulation", runtime);
 	cmd.AddValue("useNsc", "Enable if NSC shoukd be used as TCP stack for nodes A and B", useNsc);
 	cmd.AddValue("limitQueue", "Limit the bottleneck queue to 20 kB", limitQueue);
-	cmd.AddValue("nscStack", "Shared library NSC stack name", nscStack);
 	cmd.AddValue("tcpCong", "Congestion control algorithm", tcpCong);
 	cmd.Parse(argc, argv);
 
@@ -48,7 +46,7 @@ int main(int argc, char* argv[]) {
 	inetStack.Install(nodes.Get(1));
 
 	if (useNsc) {
-		inetStack.SetTcp("ns3::NscTcpL4Protocol", "Library", StringValue(nscStack));
+		inetStack.SetTcp("ns3::NscTcpL4Protocol", "Library", StringValue("liblinux2.6.26.so"));
 	}
 
 	inetStack.Install(nodes.Get(0));
@@ -58,7 +56,7 @@ int main(int argc, char* argv[]) {
 		Config::Set("/NodeList/0/$ns3::Ns3NscStack<linux2.6.26>/net.ipv4.tcp_congestion_control", StringValue(tcpCong));
 		Config::Set("/NodeList/2/$ns3::Ns3NscStack<linux2.6.26>/net.ipv4.tcp_congestion_control", StringValue(tcpCong));
 	}
-	
+
 
 	PointToPointHelper p2p;
 	p2p.SetChannelAttribute("Delay", TimeValue(MilliSeconds(50)));
@@ -94,7 +92,7 @@ int main(int argc, char* argv[]) {
 	ApplicationContainer sinkApps = sinks.Install(nodes.Get(2));
 
 	sinkApps.Start(Seconds(0));
-	sinkApps.Stop(Seconds(simTime + 30));
+	sinkApps.Stop(Seconds(runtime + 30));
 
 
 	OnOffHelper onOff("ns3::TcpSocketFactory", Address(InetSocketAddress(iRB.GetAddress(1), 8080)));
@@ -102,7 +100,7 @@ int main(int argc, char* argv[]) {
 	ApplicationContainer onOffApps = onOff.Install(nodes.Get(0));
 
 	onOffApps.Start(Seconds(0));
-	onOffApps.Stop(Seconds(simTime));
+	onOffApps.Stop(Seconds(runtime));
 
 
 	std::string filePath = "scratch/pak-nsc-reno/pak-nsc-reno";
@@ -125,14 +123,14 @@ int main(int argc, char* argv[]) {
 
 	p2p.EnablePcap(filePath, NodeContainer(nodes.Get(0)), false);
 
-	
-	Simulator::Stop(Seconds(simTime + 60));
+
+	Simulator::Stop(Seconds(runtime + 60));
 	Simulator::Run();
 
 
 	flowMon.SerializeToXmlFile(filePath + ".flowmon", false, false);
 
-	PacketSink* sink = static_cast<PacketSink*>(PeekPointer(sinkApps.Get(0)));
+	Ptr<PacketSink> sink = DynamicCast<PacketSink>(sinkApps.Get(0));
 
 	std::cout << std::endl;
 	std::cout << "Received bytes:\t" << sink->GetTotalRx() << std::endl;
@@ -140,4 +138,7 @@ int main(int argc, char* argv[]) {
 
 
 	Simulator::Destroy();
+
+
+	return 0;
 }
